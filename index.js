@@ -1,18 +1,22 @@
 'use strict'
-
+let nav =document.createElement('div')
 let rmain = document.getElementById('root')
-let nav = document.getElementById('navbar')
 let contant = document.createElement('div')
-let but1 = document.getElementById('home')
-let but2 = document.getElementById('climate')
-let but3 = document.getElementById('health')
-let but4 = document.getElementById('science')
-let but5 = document.getElementById('world')
+let buttons = document.createElement('div')
 let api_key = 'WrqgZN32FESGihRKhxSQyFN2E5GRn7V1'
 let tab_name = 'home'
-nav.style.height='10vh'
 nav.style.width='100vw'
+nav.style.display='flex'
+nav.style.padding='5px'
+nav.style.justifyContent='center'
+buttons.style.display='flex'
+buttons.style.justifyContent='space-evenly'
+buttons.style.flexWrap='wrap'
+buttons.style.maxWidth='75%'
+nav.style.boxSizing='border-box'
+rmain.append(nav);
 rmain.style.display='flex'
+rmain.style.flexDirection='column'
 rmain.style.justifyContent='center'
 rmain.style.alignItems='center'
 contant.style.width='80vw'
@@ -23,8 +27,28 @@ contant.style.gap='2% 1%'
 contant.style.padding='10px'
 contant.style.display='flex'
 contant.style.justifyContent='center'
+let i=0;
+let a=[];
+let b=[]
 
 rmain.append(contant)
+nav.append(buttons)
+
+function change(id){
+
+    tab_name = id.id;
+    child_delet();
+    get(tab_name);
+
+
+}
+
+function child_delet(){
+
+    contant.textContent = ''
+    buttons.textContent = ''
+
+}
 
 function get(tab_name){
 
@@ -32,11 +56,18 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
 .then(response => response.json())
 .then(commits =>{
 
+    i=0;
+
     commits.results.map(item =>{
 
+        a[i] = item.section;
+
+        i++;
 
         if(item.multimedia != null && item.title != '' && item.abstract != ''){
 
+        console.log(item)
+        
         let card = document.createElement('div')
         let sect = document.createElement('div')
         let img = document.createElement('img')
@@ -52,33 +83,44 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
             nav.className='home'
         
         }
-        if(tab_name == 'climate'){
+        else {if(tab_name == 'climate'){
             
             card.className='climate'
             sect.className='climate'
             nav.className='climate'
         
         }
-        if(tab_name == 'health'){
+
+        else if(tab_name == 'health'){
             
             card.className='health'
             sect.className='health'
             nav.className='health'
         
         }
-        if(tab_name == 'science'){
+        else if(tab_name == 'science'){
             
             card.className='science'
             sect.className='science'
             nav.className='science'
 
         }
-        if(tab_name == 'world'){
+        else if(tab_name == 'world'){
             
             card.className='world'
             sect.className='world'
             nav.className='world'
         
+        }
+
+        else{
+
+            card.className='home'
+            sect.className='home'
+            nav.className='home'
+
+        }
+    
         }
 
         card.id='card'
@@ -143,49 +185,24 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
 
     })
 
+    b = a.filter((item, i, ar) => ar.indexOf(item) === i)
+
+    b.forEach(item =>{
+
+        let but=document.createElement('button')
+        but.id = item
+        but.setAttribute('onclick',`change(this)`)
+        but.innerText = item
+        buttons.append(but)
+
+    })
+
     
 
 })
 
 }
 
-function child_delet(){
-
-    contant.textContent = ''
-
-}
-
 
 get(tab_name)
-
-but1.addEventListener('click',function(){
-
-    child_delet()
-    get(but1.id)
-
-})
-but2.addEventListener('click',function(){
-
-    child_delet()
-    get(but2.id)
-})
-but3.addEventListener('click',function(){
-
-    child_delet()
-    get(but3.id)
-
-})
-but4.addEventListener('click',function(){
-
-    child_delet()
-    get(but4.id)
-
-})
-but5.addEventListener('click',function(){
-
-    child_delet()
-    get(but5.id)
-})
-
-
 

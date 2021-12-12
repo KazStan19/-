@@ -6,6 +6,8 @@
 
 }
 
+card
+
 
 ul{
 
@@ -24,6 +26,8 @@ button{
     padding: 5px;
     border-radius: 10%;
     color: white;
+    min-width: 50px;
+    max-height: 40px;
 
 }
 
