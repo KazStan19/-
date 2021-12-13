@@ -27,6 +27,7 @@ contant.style.gap='2% 1%'
 contant.style.padding='10px'
 contant.style.display='flex'
 contant.style.justifyContent='center'
+let filter = false;
 let i=0;
 let a=[];
 let b=[]
@@ -46,7 +47,7 @@ function change(id){
 function child_delet(){
 
     contant.textContent = ''
-    buttons.textContent = ''
+    //buttons.textContent = ''
 
 }
 
@@ -56,17 +57,21 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
 .then(response => response.json())
 .then(commits =>{
 
-    i=0;
+    i=0
+    //a.length = 0
+    //b.length = 0
 
     commits.results.map(item =>{
 
+        if(typeof item != 'undefined' || item != null){
+
         a[i] = item.section;
 
-        i++;
+        i++;}
 
-        if(item.multimedia != null && item.title != '' && item.abstract != ''){
+        if(item.section == tab_name && item.multimedia != null && item.title != '' && item.abstract != '' || tab_name == 'home'){
 
-        console.log(item)
+        //console.log(item)
         
         let card = document.createElement('div')
         let sect = document.createElement('div')
@@ -185,6 +190,8 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
 
     })
 
+    if(filter == false){
+
     b = a.filter((item, i, ar) => ar.indexOf(item) === i)
 
     b.forEach(item =>{
@@ -197,11 +204,15 @@ fetch(`https://api.nytimes.com/svc/topstories/v2/${tab_name}.json?api-key=${api_
 
     })
 
-    
+    filter = true
+
+}
 
 })
 
 }
+
+
 
 
 get(tab_name)
